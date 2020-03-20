@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+      <?!= include('Header/Templates/header.css.html'); ?>
+      <?!= include('Header/Templates/header.html'); ?>
+      <?!= include('Sites/CSS/Index/Index.css.html'); ?>
+  </head>
+  <body>
+      <? var data = getDataPortland(); ?>
+    <div class="card">
+      <div class="container">
+        <h2><?= generatePTOHeader(data[4][1], data[4][2]) ?></h2>
+          <div>
+              <i>
+                Below is what was originally submitted for the request, feel free to edit only what you need to. Then submit below and it will edit the request and update the whole system! 
+              </i>
+           </div>
+           <br>
+        <div>
+            <div>
+              <label>Last Name</label>
+            </div>
+            <div>
+              <input id='lastName' value=<?= data[4][1] ?>>
+            </div>
+        </div>
+          <div>
+            <div>
+              <label>First Name</label>
+            </div>
+            <div>
+              <input id='firstName' value=<?= data[4][2] ?>>
+            </div>
+        </div>
+        <div>
+            <div>
+              <label>First Day Off</label>
+             </div>
+             <div>
+              <input id='FDO' value=<?= cleanUpDate(data[4][3]) ?>>
+            </div>
+        </div>
+        <div>
+            <div>
+              <label>Last Day Off</label>
+             </div>
+             <div>
+              <input id='LDO' value=<?= cleanUpDate(data[4][4]) ?>>
+            </div>
+       </div>
+       <div>
+            <div>
+              <label>Return Date</label>
+            </div>
+            <div>
+              <input id='RDO' value=<?= cleanUpDate(data[4][5]) ?>>
+            </div>
+       </div>
+       <div>
+            <div>
+              <label>Email Address</label>
+            </div>
+            <div>
+              <input id='email' value=<?= data[9][3] ?>>
+            </div>
+       </div>
+       <div>
+            <div>
+              <label>Partial Day Off</label>
+            </div>
+            <div>
+              <input id='PDO' value=<?= data[6][3] ?>>
+            </div>
+       </div>
+       <div>
+            <div>
+              <label>Time Off</label>
+            </div>
+            <div>
+              <input id='PDOTO' value=<?= data[6][4] ?>>
+            </div>
+      </div>
+      <div>
+            <div>
+              <label>Time Back</label>
+            </div>
+            <div>
+              <input id='PDOTB' value=<?= data[6][5] ?>>
+            </div>
+      </div>
+      <br>
+      <div>
+        <input id="submitButton" type="button" text="Submit Edited Request" value="Submit Edited Request" onclick="updateRequest(this);">
+      </div>
+      <br>
+      <div id='warning' style='display: none;'><i>You've already edited the request, please close this window now...</i></div>
+      <br>
+    </div>
+  </div>
+  <script>
+    window.onload = captureOriginalValues();
+    function captureOriginalValues() {
+        var passingObj = {};
+        passingObj['Lname'] = document.getElementById("lastName").value;
+        passingObj['Fname'] = document.getElementById("firstName").value;
+        passingObj['FDO'] = document.getElementById("FDO").value;
+        passingObj['LDO'] = document.getElementById("LDO").value;
+        passingObj['RDO'] = document.getElementById("RDO").value;
+        passingObj['Email'] = document.getElementById("email").value;
+        passingObj['PDO'] = document.getElementById("PDO").value;
+        passingObj['PDOTO'] = document.getElementById("PDOTO").value;
+        passingObj['PDOTB'] = document.getElementById("PDOTB").value;
+        console.log(passingObj);
+        return passingObj
+    }
+  
+    function updateRequest(el) {
+        if(!confirm("Are you sure you want to delete?")) return;
+        var passingObj = {};
+        document.getElementById("submitButton").disabled = true;
+        document.getElementById("warning").style.display = 'block';
+        passingObj['Lname'] = document.getElementById("lastName").value;
+        passingObj['Fname'] = document.getElementById("firstName").value;
+        passingObj['FDO'] = document.getElementById("FDO").value;
+        passingObj['LDO'] = document.getElementById("LDO").value;
+        passingObj['RDO'] = document.getElementById("RDO").value;
+        passingObj['Email'] = document.getElementById("email").value;
+        passingObj['PDO'] = document.getElementById("PDO").value;
+        passingObj['PDOTO'] = document.getElementById("PDOTO").value;
+        passingObj['PDOTB'] = document.getElementById("PDOTB").value;
+        google.script.run.CleanEditCell('Portland', 'Left');
+        console.log(passingObj);
+        console.log(window.onload);
+        google.script.run.PortlandUpdateOriginal(passingObj, window.onload);
+        window.close();
+    }
+  </script>
+  </body>
+</html>

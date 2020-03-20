@@ -1,0 +1,10 @@
+<script>
+    function deleteRow(el) {
+        if(!confirm("Are you sure you want to delete?")) return;
+        var tbl = el.parentNode.parentNode.parentNode;
+        var row = el.parentNode.parentNode.rowIndex;
+        var x = document.getElementById("myTable").rows[row].cells;
+        google.script.run.BendDeleteRequest(x[0].innerHTML, x[1].innerHTML, x[2].innerHTML, x[3].innerHTML, x[4].innerHTML, x[5].innerHTML);
+        tbl.deleteRow(row);
+    }
+</script>

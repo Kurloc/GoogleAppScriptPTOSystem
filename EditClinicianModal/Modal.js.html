@@ -1,0 +1,120 @@
+<script>
+
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    function openModal(el) {
+        var tbl = el.parentNode.parentNode.parentNode;
+        var row = el.parentNode.parentNode.rowIndex;
+        var x = document.getElementById("myTable").rows[row].cells;
+        modal.style.display = "block";
+        setModalValues(x[1].innerHTML, x[2].innerHTML, x[3].innerHTML, x[4].innerHTML, x[5].innerHTML, x[6].innerHTML, x[7].innerHTML, x[8].innerHTML, x[9].innerHTML, row)
+
+    }
+
+    function setModalValues(firstName, lastName, FDO, LDO, RDO, email, PDO, PDOTO, PDOTB, rowIndex) {
+            document.getElementById("some-text").innerHTML = rowIndex;
+            document.getElementById("modal-first-name").value = firstName;
+            document.getElementById("modal-last-name").value = lastName;
+            document.getElementById("modal-FDO").value = formatDateObj(FDO);
+            document.getElementById("modal-RDO").value = formatDateObj(LDO);
+            document.getElementById("modal-LDO").value = formatDateObj(RDO);
+            document.getElementById("modal-email").value = email;
+            document.getElementById("modal-PDO").value = PDO;
+            document.getElementById("modal-PDOTO").value = PDOTO;
+            document.getElementById("modal-PDOTB").value = PDOTB;
+            window.onload = captureOriginalValues();
+    }
+
+    function updateTableValues() {
+        console.log('updating the values hah derpie do dah derp', document.getElementById("modal-first-name").value);
+        var rowIndex = document.getElementById("some-text").innerHTML;
+        document.getElementById("myTable").rows[rowIndex].cells[1].innerText = document.getElementById("modal-first-name").value;
+        document.getElementById("myTable").rows[rowIndex].cells[2].innerText = document.getElementById("modal-last-name").value;
+        document.getElementById("myTable").rows[rowIndex].cells[3].innerText = unformatDateObj(document.getElementById("modal-FDO").value);
+        document.getElementById("myTable").rows[rowIndex].cells[4].innerText = unformatDateObj(document.getElementById("modal-LDO").value);
+        document.getElementById("myTable").rows[rowIndex].cells[5].innerText = unformatDateObj(document.getElementById("modal-RDO").value);
+        document.getElementById("myTable").rows[rowIndex].cells[6].innerText = document.getElementById("modal-email").value;
+        document.getElementById("myTable").rows[rowIndex].cells[7].innerText = document.getElementById("modal-PDO").value;
+        document.getElementById("myTable").rows[rowIndex].cells[8].innerText = document.getElementById("modal-PDOTO").value;
+        document.getElementById("myTable").rows[rowIndex].cells[9].innerText = document.getElementById("modal-PDOTB").value;
+        modal.style.display = "none";
+        updateRequest()
+    }
+
+    function updateRequest() {
+        var passingObj = {};
+        passingObj['Lname'] = document.getElementById("modal-last-name").value;
+        passingObj['Fname'] = document.getElementById("modal-first-name").value;
+        passingObj['FDO'] = document.getElementById("modal-FDO").value;
+        passingObj['LDO'] = document.getElementById("modal-LDO").value;
+        passingObj['RDO'] = document.getElementById("modal-RDO").value;
+        passingObj['Email'] = document.getElementById("modal-email").value;
+        passingObj['PDO'] = document.getElementById("modal-PDO").value;
+        passingObj['PDOTO'] = document.getElementById("modal-PDOTO").value;
+        passingObj['PDOTB'] = document.getElementById("modal-PDOTB").value;
+        google.script.run.VancouverUpdateOriginal(passingObj, window.onload);
+    }
+
+
+    function captureOriginalValues() {
+        var passingObj = {};
+        passingObj['Lname'] = document.getElementById("modal-last-name").value;
+        passingObj['Fname'] = document.getElementById("modal-first-name").value;
+        passingObj['FDO'] = document.getElementById("modal-FDO").value;
+        passingObj['LDO'] = document.getElementById("modal-LDO").value;
+        passingObj['RDO'] = document.getElementById("modal-RDO").value;
+        passingObj['Email'] = document.getElementById("modal-email").value;
+        passingObj['PDO'] = document.getElementById("modal-PDO").value;
+        passingObj['PDOTO'] = document.getElementById("modal-PDOTO").value;
+        passingObj['PDOTB'] = document.getElementById("modal-PDOTB").value;
+        console.log(passingObj);
+        return passingObj
+    }
+
+    function formatDateObj(date) {
+        var dateObj = date.split('-');
+        var year = dateObj[2];
+        var month = dateObj[0];
+        var date = dateObj[1];
+        if (month.length < 2) {
+            month = "0" + month;
+        }
+        if (date.length < 2) {
+            date = "0" + date;
+        }
+        console.log('returning formatted', year + '-' + month + '-' + date);
+        return year + '-' + month + '-' + date;
+    }
+
+    function unformatDateObj(date) {
+        var dateObj = date.split('-');
+        var year = dateObj[0];
+        var month = dateObj[1];
+        var date = dateObj[2];
+        console.log('returning unformatted ', month + '-' + date + '-' + year);
+        return month + '-' + date + '-' + year;
+    }
+
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // When app first loads run these
+</script>

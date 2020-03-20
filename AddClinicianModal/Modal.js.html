@@ -1,0 +1,37 @@
+<script>
+
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    function openModal(el) {
+        var tbl = el.parentNode.parentNode.parentNode;
+        var row = el.parentNode.parentNode.rowIndex;
+        var x = document.getElementById("myTable").rows[row].cells;
+        modal.style.display = "block";
+        setModalValues(x[1].innerHTML, x[2].innerHTML, x[3].innerHTML, x[4].innerHTML, x[5].innerHTML, x[6].innerHTML, row);
+        console.log(row);
+        document.getElementById("some-text").innerHTML = row;
+    }
+
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // When app first loads run these
+</script>

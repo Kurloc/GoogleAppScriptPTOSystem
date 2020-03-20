@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<div class="header">
+    <h2 class="header">Add Clinician Email to Library</h2>
+</div>
+<head>
+    <base target="_top">
+    <?!= include('AddClinicianModal/Modal.css.html'); ?>
+    <?!= include('AddClinicianModal/Modal.html'); ?>
+    <?!= include('AddClinicianModal/Modal.js'); ?>
+    <?!= include('Header/Templates/header.css'); ?>
+    <?!= include('Header/Templates/header.html'); ?>
+    <?!= include('Sites/CSS/AddClinician/AddClinician.css'); ?>
+    <?!= include('Sites/Vancouver/JavaScript/AddClinician/AddClinician.js'); ?>
+</head>
+<script>
+    <? var data = getVancouverPendingEmailRequests(); ?>
+</script>
+<body>
+<table id="myTable">
+    <tr>
+        <th class="headerRow">Search Key</th>
+        <th class="headerRow">First Name</th>
+        <th class="headerRow">Last Name</th>
+        <th class="headerRow">First Day Off</th>
+        <th class="headerRow">Last Day Off</th>
+        <th class="headerRow">Return Date</th>
+        <th class="headerRow">Email Address</th>
+    </tr>
+    <? for (var i = 1; i <= data.count; i++) { ?>
+    <tr>
+        <th class="rows"><?= data[(i)]['searchKey'] ?></th>
+        <th class="rows"><?= data[(i)]['firstName'] ?></th>
+        <th class="rows"><?= data[(i)]['lastName'] ?></th>
+        <th class="rows"><?= data[(i)]['FDO'] ?></th>
+        <th class="rows"><?= data[(i)]['LDO'] ?></th>
+        <th class="rows"><?= data[(i)]['RDO'] ?></th>
+        <th class="rows"><?= data[(i)]['email'] ?></th>
+        <th class="rows" hidden><?= data[(i)]['supervisorsEmail'] ?></th>
+        <th>
+            <input class="myBtn" type="button" value="Edit Email & Add" onclick="openModal(this);">
+        </th>
+    </tr>
+    <? } ?>
+</table>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<script>
+    function setModalValues(firstName, lastName, FDO, LDO, RDO, email, PDO, PDOTO, PDOTB, rowIndex) {
+        document.getElementById("modal-first-name").innerHTML = firstName;
+        document.getElementById("modal-last-name").innerHTML = lastName;
+        document.getElementById("modal-FDO").innerHTML = formatDateObj(FDO);
+        document.getElementById("modal-RDO").innerHTML = formatDateObj(LDO);
+        document.getElementById("modal-LDO").innerText = formatDateObj(RDO);
+        document.getElementById("modal-email").value = email;
+        window.onload = captureOriginalValues();
+    }
+
+    function updateTableValues() {
+        if(!confirm("Is the email entered correctly?")) return;
+        console.log('updating the values hah derpie do dah derp', document.getElementById("modal-first-name").innerHTML);
+        var rowIndex = document.getElementById("some-text").innerHTML;
+        console.log(rowIndex);
+        document.getElementById("myTable").rows[rowIndex].cells[1].innerText = document.getElementById("modal-first-name").innerText;
+        document.getElementById("myTable").rows[rowIndex].cells[2].innerText = document.getElementById("modal-last-name").innerText;
+        document.getElementById("myTable").rows[rowIndex].cells[3].innerText = unformatDateObj(document.getElementById("modal-FDO").innerText);
+        document.getElementById("myTable").rows[rowIndex].cells[4].innerText = unformatDateObj(document.getElementById("modal-LDO").innerText);
+        document.getElementById("myTable").rows[rowIndex].cells[5].innerText = unformatDateObj(document.getElementById("modal-RDO").innerText);
+        let employeeEmail = document.getElementById("myTable").rows[rowIndex].cells[6].innerText = document.getElementById("modal-email").value;
+        let supervisorsEmail = document.getElementById("modal-supervisor-email").value;
+        deleteRowPro(rowIndex);
+        updateRequest();
+        google.script.run.SalemAddToLibrary(employeeEmail, supervisorsEmail);
+        modal.style.display = "none";
+    }
+
+    function updateRequest() {
+        var passingObj = {};
+        passingObj['Lname'] = document.getElementById("modal-last-name").innerText;
+        passingObj['Fname'] = document.getElementById("modal-first-name").innerText;
+        passingObj['FDO'] = document.getElementById("modal-FDO").innerText;
+        passingObj['LDO'] = document.getElementById("modal-LDO").innerText;
+        passingObj['RDO'] = document.getElementById("modal-RDO").innerText;
+        passingObj['Email'] = document.getElementById("modal-email").value;
+        google.script.run.SalemUpdateOriginalTwo(passingObj, window.onload);
+    }
+
+
+    function captureOriginalValues() {
+        var passingObj = {};
+        passingObj['Lname'] = document.getElementById("modal-last-name").innerText;
+        passingObj['Fname'] = document.getElementById("modal-first-name").innerText;
+        passingObj['FDO'] = document.getElementById("modal-FDO").innerText;
+        passingObj['LDO'] = document.getElementById("modal-LDO").innerText;
+        passingObj['RDO'] = document.getElementById("modal-RDO").innerText;
+        passingObj['Email'] = document.getElementById("modal-email").value;
+        console.log(passingObj);
+        return passingObj
+    }
+
+    function formatDateObj(date) {
+        var dateObj = date.split('-');
+        var year = dateObj[2];
+        var month = dateObj[0];
+        var date = dateObj[1];
+        if (month.length < 2) {
+            month = "0" + month;
+        }
+        if (date.length < 2) {
+            date = "0" + date;
+        }
+        console.log('returning formatted', year + '-' + month + '-' + date);
+        return year + '-' + month + '-' + date;
+    }
+
+    function unformatDateObj(date) {
+        var dateObj = date.split('-');
+        var year = dateObj[0];
+        var month = dateObj[1];
+        var date = dateObj[2];
+        console.log('returning unformatted ', month + '-' + date + '-' + year);
+        return month + '-' + date + '-' + year;
+    }
+
+    function deleteRowPro(row) {
+        document.getElementById("myTable").deleteRow(row);
+    }
+</script>
